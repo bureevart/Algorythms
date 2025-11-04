@@ -4,6 +4,12 @@ class Program
 {
     static void Main()
     {
+        //Ex1();
+        Ex2();
+    }
+
+    public static void Ex1()
+    {
         // Пример из задания: [{1:1, 2:5}, {0:1, 5:2}, {0:5}, {}, {1:2}]
         var cells = new List<HexCell>
         {
@@ -28,5 +34,57 @@ class Program
 
         Console.WriteLine("Путь: " + string.Join(" -> ", result.Path));
         Console.WriteLine("Стоимость: " + result.TotalCost);
+    }
+
+    public static void Ex2()
+    {
+        var map = new HexMapVisualizer(radius: 8, viewRadius: 6);
+
+        while (true)
+        {
+            map.Draw();
+            Console.WriteLine("Commands:");
+            Console.WriteLine(" set q r h    -> change height of cell (q,r)");
+            Console.WriteLine(" src q r      -> move source");
+            Console.WriteLine(" view n       -> change view radius");
+            Console.WriteLine(" draw         -> redraw");
+            Console.WriteLine(" exit         -> quit");
+            Console.Write("> ");
+
+            var cmd = Console.ReadLine();
+            if (cmd == null) continue;
+
+            var parts = cmd.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 0) continue;
+
+            if (parts[0] == "exit") break;
+            if (parts[0] == "draw") continue;
+
+            if (parts[0] == "view" && parts.Length == 2 &&
+                int.TryParse(parts[1], out int vr))
+            {
+                map.SetViewRadius(vr);
+                continue;
+            }
+
+            if (parts[0] == "set" && parts.Length == 4 &&
+                int.TryParse(parts[1], out int q) &&
+                int.TryParse(parts[2], out int r) &&
+                int.TryParse(parts[3], out int h))
+            {
+                if (!map.SetHeight(q, r, h))
+                    Console.WriteLine("Cell not found");
+                continue;
+            }
+
+            if (parts[0] == "src" && parts.Length == 3 &&
+                int.TryParse(parts[1], out q) &&
+                int.TryParse(parts[2], out r))
+            {
+                if (!map.MoveSource(q, r))
+                    Console.WriteLine("Cell not found");
+                continue;
+            }
+        }
     }
 }
