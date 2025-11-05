@@ -38,7 +38,7 @@ class Program
 
     public static void Ex2()
     {
-        var map = new HexMapVisualizer(radius: 8, viewRadius: 6);
+        var map = new HexMapVisualizer(radius: 10, viewRadius: 10);
 
         while (true)
         {
