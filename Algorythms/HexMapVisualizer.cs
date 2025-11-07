@@ -97,13 +97,12 @@ namespace Algorythms
             var visible = HexFov.ComputeFov(Cells, Source, ViewRadius);
             var vis = new HashSet<int>(visible.Select(c => c.Index));
 
-            // рендерим строки от r = -Radius до +Radius (экранная ось r вверх)
             for (int r = -Radius; r <= Radius; r++)
             {
                 int rowLen = Cells.Count(c => c.R == r);
-                int maxLen = Cells.Count(c => c.R == 0); // центральная строка
+                int maxLen = Cells.Count(c => c.R == 0);
 
-                int indent = (maxLen - rowLen) * 2; // симметрия как в RedBlob
+                int indent = (maxLen - rowLen) * 2;
                 Console.Write(new string(' ', indent));
 
                 foreach (var cell in Cells.Where(c => c.R == r).OrderBy(c => c.Q))
